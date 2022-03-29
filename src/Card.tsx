@@ -1,8 +1,12 @@
 import React from "react";
 import CardCircle from "./CardCircle";
 
-function Card() {
-    return <CardCircle items={[3, 1, 4, 5]} />
+interface CardProps {
+    items: number[]
+}
+
+const Card: React.FC<CardProps> = (props) => {
+    return <CardCircle items={props.items} />
 }
 
 export default Card;
