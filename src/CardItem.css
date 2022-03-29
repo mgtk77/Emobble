@@ -1,0 +1,9 @@
+.card-item {
+    font-size: xx-large;
+    border:none;
+    background: none;
+}
+
+.card-item-selected {
+    background: blue;
+}

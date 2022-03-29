@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef } from 'react';
 import './CardCircle.css';
-import CardItemsContainer from './CardItemsContainer';
+import CardCircleItemsContainer from './CardCircleItemsContainer';
 
 interface CardCircleProps {
     items: number[]
@@ -17,7 +17,7 @@ const CardCircle: React.FC<CardCircleProps> = (props) => {
     })
 
     return <div ref={ref} className='card-circle'>
-        <CardItemsContainer items={props.items} cardHeight={height} cardWidth={width}></CardItemsContainer>
+        <CardCircleItemsContainer items={props.items} cardHeight={height} cardWidth={width}></CardCircleItemsContainer>
     </div> 
 }
 
