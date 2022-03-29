@@ -4,7 +4,7 @@ import Card from './Card';
 
 function Game() {
     return <div>
-        <h1>Welcome to dobble!</h1>
+        <h1>Welcome to emobble!</h1>
         <Board />
     </div>
 }
