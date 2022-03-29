@@ -1,5 +1,6 @@
 import React from 'react'
 import CardItem from './CardItem';
+import './CardCircleItemsContainer.css'
 
 interface CardItemsContainerProps {
     items: number[],
@@ -15,9 +16,9 @@ function getRandomNumber(min: number, max: number) {
 const itemsPerCard = 8
 
 const combinations = [
-    [1, 1, 6],
-    [1, 2, 5],
-    [1, 3, 4],
+    // [1, 1, 6],
+    // [1, 2, 5],
+    // [1, 3, 4],
     [2, 2, 4],
     [2, 3, 3],
 ]
@@ -63,18 +64,20 @@ function range(start: number, stop: number, step: number) {
     return result;
 };
 
-const CardCircleItemsContainer2: React.FC<CardItemsContainerProps> = (props) => {
-    let chosenCardComibnation = Math.floor(Math.random() * 8)
+const CardCircleItemsContainer: React.FC<CardItemsContainerProps> = (props) => {
+    let chosenCardComibnation = Math.floor(Math.random() * combinations.length)
+    console.log(chosenCardComibnation)
     let chosenCombination = combinations[chosenCardComibnation]
     let chosenCombinationCopied = Object.assign([], chosenCombination);
     shuffleArray(chosenCombinationCopied);
-
+    let copiedItems = Object.assign([], props.items);
+    shuffleArray(copiedItems);
     var currentStartItem = 0;
     let trs = chosenCombinationCopied.map((itemsInLine: number, lineNumber) => {
         console.log("line number", lineNumber);
         console.log("itemsInLine", itemsInLine);
         let lineTds = range(0, itemsInLine, 1).map((itemNumber) => {
-            return <td>{props.items[currentStartItem + itemNumber]}</td>
+            return <td><CardItem item={copiedItems[currentStartItem + itemNumber]} selected={false} onClick={(i)=>{}}></CardItem></td>
         });
         currentStartItem = currentStartItem + itemsInLine;
         return <tr>
@@ -83,12 +86,12 @@ const CardCircleItemsContainer2: React.FC<CardItemsContainerProps> = (props) => 
     });
 
 
-    return <table>
+    return <table className='card-circle-items-container'>
         {trs}
     </table>
 }
 
-const CardCircleItemsContainer: React.FC<CardItemsContainerProps> = (props) => {
+const CardCircleItemsContainer2: React.FC<CardItemsContainerProps> = (props) => {
     let heightMaxValue = (props.cardHeight / 2) * 45 / 100
     let heightMinValue = heightMaxValue * -1
 
