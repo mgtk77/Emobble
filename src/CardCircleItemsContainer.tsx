@@ -46,15 +46,15 @@ function range(start: number, stop: number, step: number) {
 };
 
 const CardCircleItemsContainer: React.FC<CardCircleItemsContainerProps> = (props) => {
-    let chosenCardComibnation = Math.floor(Math.random() * combinations.length)
+    // let chosenCardComibnation = Math.floor(Math.random() * combinations.length)
     
-    let [chosenCombination, _] = React.useState(shuffleArray(combinations[chosenCardComibnation]));
-    let [shuffledItems, __] = React.useState(shuffleArray(props.items));
+    // let [chosenCombination, _] = React.useState(shuffleArray(combinations[chosenCardComibnation]));
+    let chosenCombination = [2, 3, 3];
 
     var currentStartItem = 0;
     let trs = chosenCombination.map((itemsInLine: number, lineNumber) => {
         let lineTds = range(0, itemsInLine, 1).map((itemNumber) => {
-            let itemCode = shuffledItems[currentStartItem + itemNumber]
+            let itemCode = props.items[currentStartItem + itemNumber]
             return <td key={itemCode}><CardItem itemCode={itemCode} itemImage={props.deckTheme(itemCode)} selected={itemCode === props.selectedItem} onClick={props.onItemSelected}></CardItem></td>
         });
         currentStartItem = currentStartItem + itemsInLine;

@@ -171,41 +171,57 @@ tree, apple, lock, spiderweb, bomb, cat, snowman, dobble
 function Board() {
     let [selectedLeft, setSelectedLeft] = React.useState(-1);
     let [selectedRight, setSelectedRight] = React.useState(-1);
-    
+
+    let [leftCardIndex, setLeftCardIndex] = React.useState(1);
+    let [rightCardIndex, setRightCardIndex] = React.useState(0);
+
     let [innerCards, _] = React.useState(shuffleArray(cards));
+
+    let afterSelectionChange = React.useCallback((leftItem: number, rightItem: number) => {
+        console.log("after select change", leftItem, rightItem);
+        if (leftItem > 0 && leftItem === rightItem) {
+            // Clear selection
+            setSelectedLeft(-1)
+            setSelectedRight(-1)
+
+            // Advance cards
+            setRightCardIndex(leftCardIndex)
+            setLeftCardIndex(leftCardIndex + 1)
+        }
+    }, [leftCardIndex])
 
     let setSelectedLeftWithClear = React.useCallback((item: number) => {
         if (selectedLeft === item) {
             setSelectedLeft(-1);
+            afterSelectionChange(-1, selectedRight)
         } else {
             setSelectedLeft(item)
+            afterSelectionChange(item, selectedRight)
         }
-    }, [selectedLeft, setSelectedLeft])
+    }, [selectedLeft, selectedRight, setSelectedLeft])
 
     let setSelectedRightWithClear = React.useCallback((item: number) => {
         if (selectedRight === item) {
             setSelectedRight(-1);
+            afterSelectionChange(selectedLeft, -1)
         } else {
             setSelectedRight(item)
+            afterSelectionChange(selectedLeft, item)
         }
-    }, [selectedRight, setSelectedRight])
 
-    React.useEffect(() => {
-        if (selectedLeft > 0 && selectedRight > 0 && selectedLeft === selectedRight) {
-            alert("Correct");
-            setSelectedLeft(-1);
-            setSelectedRight(-1);
-        }
-    }, [selectedLeft, selectedRight, innerCards, _]);
+    }, [selectedRight, selectedLeft, setSelectedRight])
+
+    //  TODO: shuffle the displayed card ? If yes, needs to keep the shuffled list in a state.
+    //let [shuffledItems, __] = React.useState(shuffleArray(props.items));
 
     return <table>
         <tbody>
-        <tr>
-            <td>
-                <Card selectedItem={selectedLeft} onItemSelected={(item:number) => setSelectedLeftWithClear(item)} items={innerCards[0]}></Card>
-            </td>
-            <td><Card selectedItem={selectedRight} onItemSelected={(item:number) => setSelectedRightWithClear(item)} items={innerCards[1]}></Card></td>
-        </tr>
+            <tr>
+                <td>
+                    <Card selectedItem={selectedLeft} onItemSelected={(item: number) => setSelectedLeftWithClear(item)} items={innerCards[leftCardIndex]}></Card>
+                </td>
+                <td><Card selectedItem={selectedRight} onItemSelected={(item: number) => setSelectedRightWithClear(item)} items={innerCards[rightCardIndex]}></Card></td>
+            </tr>
         </tbody>
     </table>
 }
