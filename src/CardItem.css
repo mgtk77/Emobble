@@ -5,5 +5,7 @@
 }
 
 .card-item-selected {
+    border: 1px;
+    /* font-size: 75px; */
     background: blue;
 }
