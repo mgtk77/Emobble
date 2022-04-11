@@ -168,7 +168,11 @@ tree, apple, lock, spiderweb, bomb, cat, snowman, dobble
 
 */
 
-function Board() {
+interface BoardProps {
+    onPairFound: () => void
+}
+
+const Board: React.FC<BoardProps> = (props) => {
     let [selectedLeft, setSelectedLeft] = React.useState(-1);
     let [selectedRight, setSelectedRight] = React.useState(-1);
 
@@ -176,17 +180,20 @@ function Board() {
     let [rightCardIndex, setRightCardIndex] = React.useState(0);
 
     let [innerCards, _] = React.useState(shuffleArray(cards));
+    console.log("Cards", innerCards[leftCardIndex], innerCards[rightCardIndex]);
 
     let afterSelectionChange = React.useCallback((leftItem: number, rightItem: number) => {
-        console.log("after select change", leftItem, rightItem);
         if (leftItem > 0 && leftItem === rightItem) {
             // Clear selection
             setSelectedLeft(-1)
             setSelectedRight(-1)
 
             // Advance cards
+            // TODO: check if we won
             setRightCardIndex(leftCardIndex)
             setLeftCardIndex(leftCardIndex + 1)
+
+            props.onPairFound()
         }
     }, [leftCardIndex])
 
