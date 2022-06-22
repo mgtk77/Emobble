@@ -1,7 +1,10 @@
-import React from "react";
+import React, { Dispatch } from "react";
 import Card from "./Card";
 import { cards } from "./CardOptions";
+import { GameConfiguration } from "./GameConfiguration";
 import { shuffleArray } from './Utils';
+
+import { GameProgressAction } from "./GameProgressReducer"
 
 /* 
 1 - lock
@@ -169,7 +172,8 @@ tree, apple, lock, spiderweb, bomb, cat, snowman, dobble
 */
 
 interface BoardProps {
-    onPairFound: () => void
+    gameConfiguration: GameConfiguration
+    gameProgressDispatcher: Dispatch<GameProgressAction>
 }
 
 const Board: React.FC<BoardProps> = (props) => {
@@ -179,7 +183,8 @@ const Board: React.FC<BoardProps> = (props) => {
     let [leftCardIndex, setLeftCardIndex] = React.useState(1);
     let [rightCardIndex, setRightCardIndex] = React.useState(0);
 
-    let [innerCards, _] = React.useState(shuffleArray(cards));
+    let usedCards = cards.slice(0, props.gameConfiguration.cardsInGame);
+    let [innerCards, _] = React.useState(shuffleArray(usedCards));
     console.log("Cards", innerCards[leftCardIndex], innerCards[rightCardIndex]);
 
     let afterSelectionChange = React.useCallback((leftItem: number, rightItem: number) => {
@@ -188,13 +193,19 @@ const Board: React.FC<BoardProps> = (props) => {
             setSelectedLeft(-1)
             setSelectedRight(-1)
 
+            props.gameProgressDispatcher({ type: "pairFound" })
+
             // Advance cards
             // TODO: check if we won
-            setRightCardIndex(leftCardIndex)
-            setLeftCardIndex(leftCardIndex + 1)
-
-            props.onPairFound()
-        }
+            if (leftCardIndex + 1 === innerCards.length) {
+                // We won!
+                // alert("we won!")
+            } else {
+                setRightCardIndex(leftCardIndex)
+                setLeftCardIndex(leftCardIndex + 1)
+                // props.onPairFound()
+            }
+            }
     }, [leftCardIndex])
 
     let setSelectedLeftWithClear = React.useCallback((item: number) => {

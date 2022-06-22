@@ -1,4 +1,6 @@
 /*
+[clover, eye, zebra, lock, fire, spider, carrot, dinosaur]
+[11, 35, 46, 1, 20, 52, 22, 47]
 1 - lock
 2 - apple
 3 - tree
@@ -120,3 +122,5 @@ export let cards = [
     [15, 39, 1, 40, 16, 29, 25, 41],
     [3, 2, 1, 4, 5, 6, 7, 8],
 ]
+
+export let gameCardsCount = 54 as const;
